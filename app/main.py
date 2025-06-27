@@ -3,7 +3,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from app.routers import aioml
+from routers import aioml
 from starlette.middleware.sessions import SessionMiddleware
 
 app = FastAPI()
