@@ -5,7 +5,7 @@ from starlette.responses import RedirectResponse
 from starlette.middleware.sessions import SessionMiddleware
 from fastapi.responses import JSONResponse
 router = APIRouter()
-templates = Jinja2Templates(directory="app/templates")
+templates = Jinja2Templates(directory="templates")
     
 # GET route to display the form and any stored session message
 @router.get("/aioml")
@@ -22,7 +22,7 @@ def aioml_page(request: Request,step: int = 1,message:str=''):
 # Takes in the file and returns the head info and describe of the dataframe
 async def receive_data(request: Request,file: UploadFile = File(...)):
     # define the upload directory
-    upload_dir = "app/static/uploads"
+    upload_dir = "static/uploads"
     # check if it is there if not create
     os.makedirs(upload_dir, exist_ok=True)
     
@@ -35,7 +35,7 @@ async def receive_data(request: Request,file: UploadFile = File(...)):
         shutil.copyfileobj(file.file, buffer)
     # The pointer has now reached the end of the file, so we need to seek back to the beginning
     file.file.seek(0)
-    copied_file_location = 'app/static/uploads/copy.csv'
+    copied_file_location = 'static/uploads/copy.csv'
     request.session['copied_file_location'] = copied_file_location
     with open(copied_file_location, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
@@ -209,7 +209,7 @@ async def select_features(request: Request):
     df = pd.read_csv(copied_file_location)
 
     new_df = df[selected_features]
-    df_path = "app/static/uploads/selected_features.csv"
+    df_path = "static/uploads/selected_features.csv"
     new_df.to_csv(df_path, index=False)
 
     return {
