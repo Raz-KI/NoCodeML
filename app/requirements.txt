@@ -1,0 +1,5 @@
+fastapi
+starlette===0.38.6
+scikit-learn
+pandas
+uvicorn

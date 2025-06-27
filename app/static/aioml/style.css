@@ -1,0 +1,252 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+* {
+  transition: background-color 0.3s, color 0.3s;
+}
+
+:root {
+  --bg: #2b3657;
+  --card: #394b81;
+  --text: #000000;
+  --accent: #00d1ff;
+  --accent2: #a07cf6;
+  --danger: #ff4c61;
+  --success: #32d296;
+  --border: #2c2f4a;
+}
+
+body.light-mode {
+  --bg: #f5f5f9;
+  --card: #ffffff;
+  --text: #111;
+  --accent: #2589fc;
+  --accent2: #6c63ff;
+  --border: #e0e0e0;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Top Nav */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(to right, var(--accent), var(--accent2));
+  padding: 1rem 2rem;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+}
+
+.top-bar .logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.logout-btn {
+  background-color: var(--danger);
+  color: white;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Main layout */
+main {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Cards */
+.card {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 0 12px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+h2, h3 {
+  color: var(--accent);
+  margin-top: 0;
+}
+
+/* Tables */
+.csv-preview {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+
+.csv-preview th,
+.csv-preview td {
+  border: 1px solid var(--border);
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.csv-preview th {
+  background-color: rgba(255,255,255,0.05);
+  color: var(--accent2);
+}
+
+.csv-preview tr:nth-child(even) {
+  background-color: rgba(255,255,255,0.02);
+}
+
+/* Pre blocks */
+pre.csv-info {
+  background-color: #1a1a2a;
+  border: 1px solid var(--border);
+  padding: 1rem;
+  border-radius: 8px;
+  font-family: 'Courier New', Courier, monospace;
+  overflow-x: auto;
+}
+
+/* Buttons */
+button, .primary-btn {
+  background-color: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 1rem;
+  transition: background 0.2s ease;
+}
+
+button:hover, .primary-btn:hover {
+  background-color: var(--accent2);
+}
+
+.download-btn {
+  background-color: var(--success);
+  text-decoration: none;
+  padding: 0.7rem 1.6rem;
+  display: inline-block;
+  color: white;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.download-btn:hover {
+  background-color: #1dbf73;
+}
+
+/* Checkbox / radio lists */
+label {
+  display: block;
+  margin: 0.5rem 0;
+  font-weight: 500;
+}
+
+/* Navigation */
+.nav-footer {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.nav-btn {
+  background-color: var(--accent2);
+  padding: 0.5rem 1.2rem;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  margin: 0 1rem;
+}
+
+.nav-btn:hover {
+  background-color: var(--accent);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  main {
+    padding: 1rem;
+  }
+}
+
+
+/* Toggle Light/Dark */
+.theme-toggle {
+  margin-left: 1rem;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background-color: transparent;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+body.light-mode .theme-toggle {
+  color: black;
+}
+
+/* navitabs */
+.active-tab {
+  font-weight: bold;
+  border-bottom: 3px solid #d2e2f3;
+  color: #101419;
+}
+.tab-btn {
+  color: black;
+}
+
+/* new Style */
+/* Nav container */
+.enhanced-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--nav-bg, #1a1f24);
+  padding: 1rem 2rem;
+  border-bottom: 1px solid var(--border, #e0e0e0);
+}
+
+/* Logo + subtext */
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
+
+.logo-text {
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.logo-subtext {
+  font-size: 0.9rem;
+  font-weight: 400;
+  opacity: 0.8;
+}
+
+/* Right-side actions */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+

@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AIOMLapp - All-In-One Machine Learning App</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='aioml/style.css') }}">
+  <script src="{{ url_for('static', path='aioml/script.js') }}" defer></script>
+</head>
+
+<body class="light-mode">
+  <nav class="top-bar enhanced-nav">
+    <div class="logo-container">
+      <div class="logo-text">🤖 AIOMLapp</div>
+      <div class="logo-subtext">All-In-One Machine Learning Platform</div>
+    </div>
+    
+    <div class="nav-actions">
+      <button id="themeToggle" class="theme-toggle">🌙 Dark Mode</button>
+      <form action="logout" method="get">
+        <button type="submit" class="logout-btn">Logout</button>
+      </form>
+    </div>
+  </nav>
+  
+
+  <main>
+    {% if step == 1 %}
+    <section class="card">
+      <h2>📁 Upload Your Dataset</h2>
+      <input type="file" id="csvInput" />
+      <button id="uploadBtn" class="primary-btn">Upload CSV</button>
+    </section>
+
+    <section class="card" id="dataPreviewSection" style="display: none;">
+      <h3>📄 Data Preview</h3>
+      <div id="previewHead" class="csv-preview"></div>
+      <div id="previewInfo" class="csv-preview"></div>
+      <div id="previewDescribe" class="csv-preview"></div>
+    </section>
+
+    <section class="card" id="treatingMissingValues" style="display: none;">
+      <h3>❓ Handle Missing Values</h3>
+      <button id="checkMissingValues" class="primary-btn">Check</button>
+      <section id="ViewingMissingValues" style="display: none;">
+        <div id="missingValuesCount"></div>
+        <div id="selectMethod"></div>
+        <button id="handleMissingBtn" class="primary-btn">Apply</button>
+      </section>
+    </section>
+
+    <section class="card" id="viewingNewDF" style="display: none;">
+      <h3>✅ Cleaned Data</h3>
+      <div id="newDataFrame" class="csv-preview"></div>
+      <button id="doEncoding" class="primary-btn">One-Hot Encode</button>
+    </section>
+
+    <section class="card" id="oneHotEncoding" style="display: none;">
+      <h3>🎭 One-Hot Encoding</h3>
+      <div id="viewColumns"></div>
+      <button id="encodeBtn" class="primary-btn">Apply Encoding</button>
+      <div id="encodedDataFrame" class="csv-preview"></div>
+    </section>
+
+    <section class="card" id="scaling" style="display: none;">
+      <h3>📏 Normalize Features</h3>
+      <div id="numericalColumns"></div>
+      <button id="normalize" class="primary-btn">Normalize</button>
+      <div id="normalizedResult" class="csv-preview"></div>
+    </section>
+
+    <section class="card" id="featureSelection" style="display: none;">
+      <h3>🧠 Feature Selection</h3>
+      <div id="featureList"></div>
+      <button id="featureSelectionButton" class="primary-btn">Select Features</button>
+      <div id="selectedDF" class="csv-preview"></div>
+    </section>
+
+    <div class="card action-bar" id="downloadProcessedData" style="display: none;">
+      <a id="downloadBtn" class="download-btn hidden">⬇ Download Processed Data</a>
+    </div>
+
+    {% elif step == 2 %}
+    <section class="card">
+      <h2>📊 Exploratory Data Analysis</h2>
+      <p>(Coming soon!)</p>
+    </section>
+    {% endif %}
+
+    <div class="nav-footer">
+      {% if step > 1 %}
+      <a href="/aioml?step={{ step - 1 }}"><button class="nav-btn">⬅ Preprocess Data</button></a>
+      {% endif %}
+      {% if step < 2 %}
+      <a href="/aioml?step={{ step + 1 }}"><button class="nav-btn">View Insights ➡</button></a>
+      {% endif %}
+    </div>
+  </main>
+</body>
+</html> 
+
