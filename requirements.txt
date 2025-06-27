@@ -3,3 +3,4 @@ starlette===0.38.6
 scikit-learn
 pandas
 uvicorn
+itsdangerous===2.2.0
