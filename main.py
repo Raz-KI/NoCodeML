@@ -11,9 +11,9 @@ app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key="your-super-secret-key")
 
 app.include_router(aioml.router)
-app.mount("/static", StaticFiles(directory="app/static"), name="static")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
-templates = Jinja2Templates(directory="app/templates")
+templates = Jinja2Templates(directory="templates")
 
 @app.get("/")
 def read_root(  request: Request):
