@@ -1,5 +1,3 @@
-
-import pickle
 import pandas as pd
 import joblib
 from fastapi import APIRouter, Request
@@ -25,9 +23,9 @@ scaler = joblib.load(render_path+"/models/salary_prediction_LR/scaler.pkl")
 model_columns = joblib.load(render_path+"/models/salary_prediction_LR/model_columns.pkl")
 
 # GET route to serve HTML page
-@router.get("/allAlgo")
-def all_algo_page(request: Request):
-    return templates.TemplateResponse("projects/AllAlgo/AllAlgo.html", {
+@router.get("/salary_prediction_linear_regression")
+def salary_pred(request: Request):
+    return templates.TemplateResponse("projects/salPredLR/salPredLR.html", {
         "request": request
     })
 

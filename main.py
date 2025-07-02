@@ -3,7 +3,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from routers import aioml, allAlgo
+from routers import aioml, salPredLR
 from starlette.middleware.sessions import SessionMiddleware
 
 app = FastAPI()
@@ -11,7 +11,7 @@ app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key="your-super-secret-key")
 
 app.include_router(aioml.router)
-app.include_router(allAlgo.router)
+app.include_router(salPredLR.router)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 templates = Jinja2Templates(directory="templates")
