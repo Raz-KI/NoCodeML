@@ -1,8 +1,8 @@
 import os,io,shutil,pandas as pd
 from fastapi import APIRouter, File, Request, Form, Response, UploadFile
 from fastapi.templating import Jinja2Templates
-from starlette.responses import RedirectResponse
-from starlette.middleware.sessions import SessionMiddleware
+# from starlette.responses import RedirectResponse
+# from starlette.middleware.sessions import SessionMiddleware
 from fastapi.responses import JSONResponse
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
@@ -71,13 +71,14 @@ def infoAndCleaning(df):
 @router.post("/aioml/missing-values")
 async def viewMissingValues(request: Request):
     data = await request.json()
-
+    print("Missing Value Process Started")
     if data['action'] == 'check':
         copied_file_location = request.session.get('copied_file_location')
         tempDf = pd.read_csv(copied_file_location, encoding="utf-8", engine="python")
         missingTable = tempDf.isnull().sum()
         missingTable = missingTable[missingTable > 0].to_dict()
         missingColumns = (list(missingTable.keys()))
+        print("Missing Values Found")
         # We need to do the to_dict as otherwise it is just Pandas Series not understood by JSON, but json understands dict
         return JSONResponse(content={
             "missingTable": missingTable,

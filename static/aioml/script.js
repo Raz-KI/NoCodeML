@@ -47,6 +47,8 @@ document.getElementById('checkMissingValues').addEventListener('click', async ()
   const missingTable = data.missingTable; // e.g., { Age: 177, Cabin: 687 }
 
   if (!missingTable || Object.keys(missingTable).length === 0) {
+    console.log("No missing values found.");
+    document.getElementById("ViewingMissingValues").style.display = "block";
     document.getElementById('missingValuesCount').innerHTML = "<p>No missing values found.</p>";
     return;
   }
@@ -86,36 +88,41 @@ document.getElementById('checkMissingValues').addEventListener('click', async ()
 document.getElementById('handleMissingBtn').addEventListener('click', async () => {
   const treatments = {};
 
-  for (const col of window._missingColumns) {
-    const selected = document.querySelector(`input[name="${col}"]:checked`);
-    if (selected) {
-      treatments[col] = selected.value;
+  try{
+    for (const col of window._missingColumns) {
+      const selected = document.querySelector(`input[name="${col}"]:checked`);
+      if (selected) {
+        treatments[col] = selected.value;
+      }
     }
+
+    if (Object.keys(treatments).length === 0) {
+      alert("Please select at least one treatment.");
+      return;
+    }
+
+    const response = await fetch("/aioml/missing-values", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ action: "treat", columns: treatments })
+    });
+
+    const result = await response.json(); 
+    console.log(result);
+    document.getElementById("downloadProcessedData").style.display = "block";
+    document.getElementById("newDataFrame").innerHTML = result.newDFHead;
+    document.getElementById("treatingMissingValues").style.display = "none";
+    document.getElementById("downloadBtn").classList.remove("hidden");
+    document.getElementById("downloadBtn").href = result.pathToNewFile;
+    document.getElementById("viewingNewDF").style.display = "block";
+  }
+  catch (error) {
+    document.getElementById("viewingNewDF").style.display = "block";  
   }
 
-  if (Object.keys(treatments).length === 0) {
-    alert("Please select at least one treatment.");
-    return;
-  }
-
-  const response = await fetch("/aioml/missing-values", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ action: "treat", columns: treatments })
-  });
-
-  const result = await response.json(); 
-  console.log(result);
-
-  // Show cleaned DataFrame
-  document.getElementById("viewingNewDF").style.display = "block";
-  document.getElementById("downloadProcessedData").style.display = "block";
-  document.getElementById("newDataFrame").innerHTML = result.newDFHead;
-  document.getElementById("treatingMissingValues").style.display = "none";
-  document.getElementById("downloadBtn").classList.remove("hidden");
-  document.getElementById("downloadBtn").href = result.pathToNewFile;
+  
 });
 
 // 'doEncoding'
