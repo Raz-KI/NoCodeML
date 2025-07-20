@@ -5,8 +5,6 @@ from fastapi.responses import JSONResponse
 from fastapi.templating import Jinja2Templates
 import os
 
-render_path = "/opt/render/project/src"
-
 router = APIRouter()
 
 templates = Jinja2Templates(directory="templates")
@@ -15,12 +13,15 @@ model = joblib.load("models/salary_prediction_LR/salary_prediction_model.pkl")
 scaler = joblib.load("models/salary_prediction_LR/scaler.pkl")
 model_columns = joblib.load("models/salary_prediction_LR/model_columns.pkl")
 
-    
-
-# Comment this if you are running locally
-model = joblib.load(render_path+"/models/salary_prediction_LR/salary_prediction_model.pkl")
-scaler = joblib.load(render_path+"/models/salary_prediction_LR/scaler.pkl")
-model_columns = joblib.load(render_path+"/models/salary_prediction_LR/model_columns.pkl")
+# Check if running in Render or locally
+try:
+    render_path = "/opt/render/project/src"
+    model = joblib.load(render_path+"/models/salary_prediction_LR/salary_prediction_model.pkl")
+    scaler = joblib.load(render_path+"/models/salary_prediction_LR/scaler.pkl")
+    model_columns = joblib.load(render_path+"/models/salary_prediction_LR/model_columns.pkl")
+except FileNotFoundError:
+    print("Running locally")
+    pass
 
 # GET route to serve HTML page
 @router.get("/salary_prediction_linear_regression")
