@@ -96,7 +96,8 @@ async def viewMissingValues(request: Request):
                 tempDf[i] = tempDf[i].fillna(tempDf[i].median())
             elif missingColumnData[i] == 'mode':
                 tempDf[i] = tempDf[i].fillna(tempDf[i].mode()[0])
-
+            elif missingColumnData[i] == 'dropRows':
+                tempDf.dropna(subset=[i], inplace=True)
         tempDf.to_csv(copied_file_location, index=False)
         print("missing values done")
         return {
@@ -135,32 +136,38 @@ async def one_hot_encode_columns(request: Request):
         ],
         remainder='passthrough'
     )
+    if selected_columns:
+        # Then we fit the pipeline to the dataframe
+        transformed = preprocessor.fit_transform(df)
+        # transformed is a numpy array 
+        
+        # We need to convert it to pandas DataFrame with proper column names so...
 
-    # Then we fit the pipeline to the dataframe
-    transformed = preprocessor.fit_transform(df)
-    # transformed is a numpy array 
-    
-    # We need to convert it to pandas DataFrame with proper column names so...
+        # We will need to get the names of all the columns (encoded and non-encoded) after the transformation
 
-    # We will need to get the names of all the columns (encoded and non-encoded) after the transformation
+        encoded_col_names = preprocessor.named_transformers_['cat'].get_feature_names_out(selected_columns)
+        # By this we get the names of the encoded columns, preprocessor will look into its transformers and  will get the 'cat' transformer
+        # then we use get_feature_names_out to get names of encoded columns
 
-    encoded_col_names = preprocessor.named_transformers_['cat'].get_feature_names_out(selected_columns)
-    # By this we get the names of the encoded columns, preprocessor will look into its transformers and  will get the 'cat' transformer
-    # then we use get_feature_names_out to get names of encoded columns
+        # Then we get the names of the non-encoded columns
+        non_cat_cols = [col for col in df.columns if col not in selected_columns]
 
-    # Then we get the names of the non-encoded columns
-    non_cat_cols = [col for col in df.columns if col not in selected_columns]
+        # Then we combine them in a list and we will use the DataFrame constructor to create a new DF 
+        final_columns = list(encoded_col_names) + non_cat_cols
+        new_df = pd.DataFrame(transformed, columns=final_columns)
 
-    # Then we combine them in a list and we will use the DataFrame constructor to create a new DF 
-    final_columns = list(encoded_col_names) + non_cat_cols
-    new_df = pd.DataFrame(transformed, columns=final_columns)
+        new_df.to_csv(copied_file_location, index=False)
 
-    new_df.to_csv(copied_file_location, index=False)
+        return {
+            "encodedDF": new_df.head().to_html(index=False, escape=False),
+            "pathToEncodedFile": 'static/uploads/copy.csv'
+        }
+    else:
+        return {
+            "encodedDF": df.head().to_html(index=False, escape=False),
+            "pathToEncodedFile": 'static/uploads/copy.csv'
+        }
 
-    return {
-        "encodedDF": new_df.head().to_html(index=False, escape=False),
-        "pathToEncodedFile": 'static/uploads/copy.csv'
-    }
 @router.get("/aioml/numerical-columns")
 async def get_numerical_columns(request: Request):
     copied_file_location = request.session.get('copied_file_location')
@@ -211,8 +218,14 @@ async def select_features(request: Request):
     new_df = df[selected_features]
     df_path = "static/uploads/selected_features.csv"
     new_df.to_csv(df_path, index=False)
-
-    return {
-        "selectedDF": new_df.head().to_html(index=False, escape=False),
-        "pathToSelected": 'static/uploads/selected_features.csv'
-    }
+    
+    if selected_features:
+        return {
+            "selectedDF": new_df.head().to_html(index=False, escape=False),
+            "pathToSelected": 'static/uploads/selected_features.csv'
+        }
+    else:
+        return {
+            "selectedDF": df.head().to_html(index=False, escape=False),
+            "pathToSelected": 'static/uploads/selected_features.csv'
+        }

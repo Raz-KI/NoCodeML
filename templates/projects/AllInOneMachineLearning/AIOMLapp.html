@@ -27,6 +27,7 @@
 
   <main>
     {% if step == 1 %}
+    <h1 class="card" style="display: flex; justify-content: center;">Preprocessing and Cleaning</h1>
     <section class="card">
       <h2>📁 Upload Your Dataset</h2>
       <input type="file" id="csvInput" />
@@ -82,10 +83,14 @@
     </div>
 
     {% elif step == 2 %}
-    <section class="card">
-      <h2>📊 Exploratory Data Analysis</h2>
-      <p>(Coming soon!)</p>
-    </section>
+    
+      <h1 class="card" style="display: flex; justify-content: center;">Model Training</h1>
+      <section class="card">
+        <h2>📁 Upload Your Dataset</h2>
+        <input type="file" id="csvInput" />
+        <button id="uploadBtn" class="primary-btn">Upload CSV</button>
+      </section>
+    
     {% endif %}
 
     <div class="nav-footer">
@@ -93,7 +98,7 @@
       <a href="/aioml?step={{ step - 1 }}"><button class="nav-btn">⬅ Preprocess Data</button></a>
       {% endif %}
       {% if step < 2 %}
-      <a href="/aioml?step={{ step + 1 }}"><button class="nav-btn">View Insights ➡</button></a>
+      <a href="/aioml?step={{ step + 1 }}"><button class="nav-btn">Model Training ➡</button></a>
       {% endif %}
     </div>
   </main>

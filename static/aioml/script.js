@@ -70,10 +70,11 @@ document.getElementById('checkMissingValues').addEventListener('click', async ()
     treatmentHTML += `
       <div style="margin-bottom: 1rem;">
         <strong>${col}</strong><br>
-        <label><input type="radio" name="${col}" value="drop" /> Drop rows</label><br>
+        <label><input type="radio" name="${col}" value="drop" /> Drop Column</label><br>
         <label><input type="radio" name="${col}" value="mean" /> Fill with mean</label><br>
         <label><input type="radio" name="${col}" value="median" /> Fill with median</label><br>
         <label><input type="radio" name="${col}" value="mode" /> Fill with mode</label><br>
+        <label><input type="radio" name="${col}" value="dropRows" /> Drop the rows</label><br>
       </div>
     `;
   }
@@ -176,7 +177,7 @@ document.getElementById('handleMissingBtn').addEventListener('click', async () =
         const checkbox = `
           <label>
             <input type="checkbox" name="numericalCols" value="${col}">
-            📊 ${col}
+             ${col}
           </label><br>`;
         container.innerHTML += checkbox;
       });
@@ -236,6 +237,7 @@ document.getElementById('handleMissingBtn').addEventListener('click', async () =
     });
   
     const data = await response.json();
+    document.getElementById("featureSelection").style.display = "none";
     document.getElementById("selectedDF").innerHTML = data.selectedDF;
     document.getElementById("downloadBtn").href = data.pathToSelected;
   })
@@ -245,5 +247,7 @@ document.getElementById('handleMissingBtn').addEventListener('click', async () =
     document.getElementById("themeToggle").textContent = isLight ? "🌙 Dark Mode" : "☀ Light Mode";
   });
   
+  // Model training begins
 
 })
+
